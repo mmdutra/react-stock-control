@@ -7,6 +7,9 @@ api.interceptors.request.use(async config => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+
+    config.baseURL = 'http://localhost:3333/'
+
     return config;
 });
 
