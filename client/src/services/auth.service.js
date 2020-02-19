@@ -5,7 +5,7 @@ export const TOKEN_KEY = "auth";
 api.interceptors.request.use(async config => {
     const token = getToken();
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `${token}`;
     }
 
     config.baseURL = 'http://localhost:3333/'
@@ -13,6 +13,17 @@ api.interceptors.request.use(async config => {
     return config;
 });
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+
+        if ((error.response && error.response.status) && [401, 403].includes(error.response.status)) {
+            logout()
+            window.location = '/'
+        } else {
+            return Promise.reject(error)
+        }
+    })
 
 export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 

@@ -26,8 +26,6 @@ class Database {
 
     async create(product) {
 
-        console.log(product)
-
         const data = await this.getFileData()
         const id = Date.now()
 
@@ -58,6 +56,10 @@ class Database {
         }
 
         const data = await this.getFileData()
+
+        if (!data)
+            throw Error('A lista está vazia!')
+
         const index = data.findIndex(item => item.id = parseInt(id))
         if (index === -1) {
             throw Error('O produto informado nao existe')
