@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Table } from 'react-bootstrap'
-import Content from '../../components/content';
+import { Row, Col } from 'react-bootstrap'
+import Content from '../../components/content'
 import { ProductService } from './../../services/products.service'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons'
-import styled from 'styled-components';
-import { CreateProductModal } from './createProduct';
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components'
+import { CreateProductModal } from './createProduct'
+import { ListProduct } from './listProduct'
 
 const ActionButton = styled.a`
     cursor: pointer;
@@ -21,10 +22,10 @@ export const Products = () => {
         console.log(e)
     }
 
-    const deleteItem = (id) => {
+    const removeItem = (id) => {
         service.delete(id)
             .then(res => {
-                console.log("sucesso!")
+                console.log(res)
             })
             .catch(err => console.log(err))
     }
@@ -75,46 +76,7 @@ export const Products = () => {
                             <FontAwesomeIcon icon={faPlus} />
                         </ActionButton>
                     </div>
-                    <Table hover size="sm">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Brand</th>
-                                <th>Qtd</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                products.map((item, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>
-                                                {item.name}
-                                            </td>
-                                            <td>
-                                                {item.brand}
-                                            </td>
-                                            <td>
-                                                {item.qtd}
-                                            </td>
-                                            <td>
-                                                <ActionButton onClick={() => update(item)} >
-                                                    <FontAwesomeIcon icon={faEdit} />
-                                                </ActionButton>
-                                            </td>
-                                            <td>
-                                                <ActionButton onClick={() => deleteItem(item.id)} >
-                                                    <FontAwesomeIcon icon={faTrash} />
-                                                </ActionButton>
-                                            </td>
-                                        </tr >
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </Table>
+                    <ListProduct products={products} updateItem={update} removeItem={removeItem} />
                 </Col>
             </Row>
         </Content>
